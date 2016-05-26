@@ -2,9 +2,8 @@ var express = require('express');
 var router = express.Router();
 var tableservice = require('../service/tableservice');
 var templateservice = require('../service/templateservice');
-var adm_zip = require('adm-zip');
-//var fs = require('fs');
-//var archiver = require('archiver');
+var fs = require('fs');
+var archiver = require('archiver');
 var configconst=require('../infrastructure/configconst');
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -89,9 +88,6 @@ router.post('/initsearch', function(req, res, next) {
 router.get('/zip', function(req, res, next) {
     //zip the file;
     //creating archives
-    var fs = require('fs');
-    var archiver = require('archiver');
-
     var output = fs.createWriteStream('public/tpl-archive.zip');
     var archive = archiver('zip');
 
