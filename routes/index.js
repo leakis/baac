@@ -5,6 +5,8 @@ var templateservice = require('../service/templateservice');
 var fs = require('fs');
 var archiver = require('archiver');
 var configconst=require('../infrastructure/configconst');
+var uuid=require('uuid');
+var session = require('express-session');
 /* GET home page. */
 router.get('/', function(req, res, next) {
     tableservice.dbetc.databaseList(function(err,dblist){
@@ -34,6 +36,9 @@ router.post('/initsearch', function(req, res, next) {
     var table= req.body.table;
     var cols= req.body.cols;
     var dbname= req.body.dbname;
+    var myuuid=uuid.v1();
+    req.session.myuuid =myuuid;
+    configconst.zippath='resources/zipfiles/'+myuuid+'/';
     if(cols&&cols.length>0) {
         tableservice.dbetc.columnList(table, dbname, function (err, columnlist) {
             var outputstr = tableservice.dbetc.initAdminModel(table, columnlist);
@@ -88,7 +93,8 @@ router.post('/initsearch', function(req, res, next) {
 router.get('/zip', function(req, res, next) {
     //zip the file;
     //creating archives
-    var output = fs.createWriteStream('public/tpl-archive.zip');
+    var myuuid=req.session.myuuid;
+    var output = fs.createWriteStream('public/'+myuuid+'.zip');
     var archive = archiver('zip');
 
     archive.on('error', function(err){
@@ -97,12 +103,12 @@ router.get('/zip', function(req, res, next) {
 
     archive.pipe(output);
     archive.bulk([
-        { src: ['resources/zipfiles/**']}
+        { src: ['resources/zipfiles/'+myuuid+'/**']}
     ]);
     archive.finalize();
     //end
-    // res.send('suc');
-    res.redirect('/tpl-archive.zip')
+     res.send(myuuid);
+   // res.redirect('/tpl-archive.zip')
 });
 
 module.exports = router;
