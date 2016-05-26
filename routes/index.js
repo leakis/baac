@@ -8,18 +8,18 @@ var adm_zip = require('adm-zip');
 var configconst=require('../infrastructure/configconst');
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  tableservice.dbetc.databaseList(function(err,dblist){
-    res.render('index',{dblist: dblist});
-  })
- // res.render('index', { title: 'Express' });
+    tableservice.dbetc.databaseList(function(err,dblist){
+        res.render('index',{dblist: dblist});
+    })
+    // res.render('index', { title: 'Express' });
 });
 
 router.get('/tables', function(req, res, next) {
- var dbname= req.query.dbname;
-  tableservice.dbetc.tableList(dbname,function(err,tablelist){
-    res.send(tablelist);
-  })
-  // res.render('index', { title: 'Express' });
+    var dbname= req.query.dbname;
+    tableservice.dbetc.tableList(dbname,function(err,tablelist){
+        res.send(tablelist);
+    })
+    // res.render('index', { title: 'Express' });
 });
 
 router.get('/columns', function(req, res, next) {
@@ -57,38 +57,56 @@ router.post('/initsearch', function(req, res, next) {
             tableservice.dbetc.initAutoMapper(tblist);
             tblist.forEach(function (itbname) {
                 tableservice.dbetc.columnList(itbname, dbname, function (err, columnlist) {
-                        var outputstr = tableservice.dbetc.initAdminModel(itbname, columnlist);
+                    var outputstr = tableservice.dbetc.initAdminModel(itbname, columnlist);
                     (function(itbname){
-                    templateservice.templateservice.getServiceTemplate(function (err, str) {
-                        templateservice.templateservice.writeServiceTemplate(str, itbname, cols, columnlist);
-                    });
+                        templateservice.templateservice.getServiceTemplate(function (err, str) {
+                            templateservice.templateservice.writeServiceTemplate(str, itbname, cols, columnlist);
+                        });
                     })(itbname);
 
-                     (function(itbname){
-                    templateservice.templateservice.getControllerTemplate(function (err, str) {
-                        templateservice.templateservice.writeControllerTemplate(str, itbname, cols, columnlist);
-                    });
-                        })(itbname);
+                    (function(itbname){
+                        templateservice.templateservice.getControllerTemplate(function (err, str) {
+                            templateservice.templateservice.writeControllerTemplate(str, itbname, cols, columnlist);
+                        });
+                    })(itbname);
 
-                      (function(itbname){
-                    templateservice.templateservice.getHtmlTemplate(function (err, str) {
-                        templateservice.templateservice.writeHtmlTemplate(str, itbname, cols, columnlist);
-                    });
-                        })(itbname);
+                    (function(itbname){
+                        templateservice.templateservice.getHtmlTemplate(function (err, str) {
+                            templateservice.templateservice.writeHtmlTemplate(str, itbname, cols, columnlist);
+                        });
+                    })(itbname);
                 });
-                //zip the file;
-                //creating archives
-                //var zip = new adm_zip();
-                //zip.addLocalFolder('E:\\MyNod','f:\\');
-                //zip.writeZip('f:\\adm-archive.zip');
-                //end
             })
-           res.send('helloall');
+            res.send('helloall');
 
         })
 
     }
 
+});
+
+
+router.get('/zip', function(req, res, next) {
+    //zip the file;
+    //creating archives
+    var fs = require('fs');
+    var archiver = require('archiver');
+
+    var output = fs.createWriteStream('adm-archive.zip');
+    var archive = archiver('zip');
+
+    archive.on('error', function(err){
+        throw err;
+    });
+
+    archive.pipe(output);
+    archive.bulk([
+        { src: ['/home/zheng/node/baac/resources/template/**']}
+    ]);
+    archive.finalize();
+    //end
+    // res.send('suc');
+    res.redirect('/tpl-archive.zip')
 });
 
 module.exports = router;

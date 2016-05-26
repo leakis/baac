@@ -188,8 +188,8 @@ var tplService={
                     }
                 }
                 str=str.replace(/\{\{table}}/g,tbname);
-                str=str.replace('{{pk}}',pk);
-                str=str.replace('{{orderby}}',pk);
+                str=str.replace(/\{\{pk}}/g,pk);
+                str=str.replace(/\{\{orderby}}/g,pk);
                fs.writeFile(codefilepath,str,'utf-8',function(err){
                });
             }
