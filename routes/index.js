@@ -92,7 +92,7 @@ router.get('/zip', function(req, res, next) {
     var fs = require('fs');
     var archiver = require('archiver');
 
-    var output = fs.createWriteStream('adm-archive.zip');
+    var output = fs.createWriteStream('public/tpl-archive.zip');
     var archive = archiver('zip');
 
     archive.on('error', function(err){
@@ -101,7 +101,7 @@ router.get('/zip', function(req, res, next) {
 
     archive.pipe(output);
     archive.bulk([
-        { src: ['/home/zheng/node/baac/resources/template/**']}
+        { src: ['resources/zipfiles/**']}
     ]);
     archive.finalize();
     //end

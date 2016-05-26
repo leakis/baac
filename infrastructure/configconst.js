@@ -2,7 +2,8 @@
  * Created by Administrator on 2016/4/25.
  */
 var configs={
-    tplpath:'e:\\MyNode\\baac\\resources\\template\\',
+    tplpath:'resources/template/',
+    zippath:'resources/zipfiles/',
     sqlconnectionstring:'',
     dbconfig :{
         user: 'sa',

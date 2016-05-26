@@ -177,7 +177,7 @@ var dbetc={
         }
         outputstr+='}\n\n';
         outputstr+='}\n';
-        var codepath = config.tplpath + table;
+        var codepath = config.zippath + table;
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err) {
                 var codefilepath = codepath + '\\' + table + 'AdminModel.cs';
@@ -213,7 +213,7 @@ var dbetc={
         outputstr+= '}\n';
         outputstr+='}\n\n';
         outputstr+='}\n';
-        var codepath = config.tplpath;
+        var codepath = config.zippath;
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err) {
                 var codefilepath = codepath + '\\' + 'AdminAutoMapper.cs';

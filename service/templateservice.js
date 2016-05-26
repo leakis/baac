@@ -112,7 +112,7 @@ var tplService={
         str = str.replace(/\{\{js-create}}/g, js_create);
         str = str.replace(/\{\{search_iv}}/g, searchiv);
         str = str.replace(/\{\{search_var}}/g, searchvar);
-        var codepath = htmlfilepath  + tbname;
+        var codepath = configconst.zippath  + tbname;
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err)
             {
@@ -143,7 +143,7 @@ var tplService={
         str=str.replace(/\{\{table_l}}/g,tbname.toLocaleLowerCase());
         str=str.replace(/\{\{search_pa}}/g,methodparam);
         str=str.replace(/\{\{search_p}}/g,methodp);
-        var codepath = htmlfilepath  + tbname;
+        var codepath = configconst.zippath  + tbname;
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err)
             {
@@ -160,7 +160,7 @@ var tplService={
     {
         str=str.replace(/\{\{db}}/g,configconst.dbconfig.database);
         str=str.replace(/\{\{table_l}}/g,tbname.toLocaleLowerCase())
-        var codepath = htmlfilepath  + tbname;
+        var codepath = configconst.zippath  + tbname;
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err)
             {
