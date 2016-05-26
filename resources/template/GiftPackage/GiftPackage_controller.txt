@@ -1,0 +1,69 @@
+﻿      [Auth]
+    public class ##Controller : ControllerBase
+    {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(##Controller));
+        ##Service _service = null;
+        //
+        // GET: /SystemCenter/
+        public ##Controller()
+        {
+            _service = new ##Service();
+        }
+
+
+
+
+		#region begin GiftPackage
+
+		public ActionResult GiftPackageList(int page=1)
+        {
+            int p = page <= 0 ? 1 : page;
+            int pageSize = 100;
+            int skip = (p - 1) * pageSize;
+            int totalCount =_service.GetGiftPackageTotalCount(GameId);
+            Pagination pagination = new Pagination(totalCount, p, pageSize);
+            ViewBag.Pagination = pagination;
+            List<GiftPackageAdminModel> list =_service.GetGiftPackageList(GameId,skip,pageSize);
+            if (list == null)
+            {
+                list = new List<GiftPackage>();
+            }
+            return View(list);
+        }
+
+         [HttpGet]
+        public string GetGiftPackage_Ajax(int id)
+        {
+            var rtn = _service.GetGiftPackage(id);
+
+            return JsonConvert.SerializeObject(rtn);
+        }
+
+         [HttpPost]
+         public JsonResult SaveGiftPackage_Ajax(GiftPackageAdminModel data)
+         {
+             log.InfoFormat("用户：{0}, 修改GiftPackage: {1} ", Session["AdminUser"], JsonConvert.SerializeObject(data));
+			 bool rtn = false;
+            if (data.{{pk}} > 0)
+            {
+                 rtn = _service.ModGiftPackage(data); 
+            }
+            else
+            {
+                 rtn = _service.SaveGiftPackage(data);
+            }
+             return Json(rtn);
+         }
+
+		        //删除
+        [HttpPost]
+        public JsonResult DeleteGiftPackage_Ajax(int id, int m)
+        {  log.InfoFormat("用户：{0}, 修改GiftPackage: id:{1}, m:{2} ", Session["AdminUser"], id,m);
+            bool isSuc = _service.DeleteGiftPackage(id, m);
+            return Json(isSuc);
+        }
+
+		 #endregion end GiftPackage
+
+
+   }

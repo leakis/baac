@@ -1,0 +1,66 @@
+﻿      
+ public class SystemCenterService
+    {
+	   WeiXinEntities context = new WeiXinEntities();
+
+	   #region begin RuleWord
+
+       public int GetRuleWordTotalCount(GameId gameId)
+{
+Expression<Func<RuleWord, bool>> predicate = a => a.GameId == (long)gameId;
+int totalCount = 0;
+totalCount = context.RuleWord.Where(predicate).Count();
+return totalCount;
+}
+public List<RuleWordAdminModel> GetRuleWordList(GameId gameId,int skip, int pageSize)
+{
+{List<RuleWord> list = null;
+Expression<Func<RuleWord, bool>> predicate = a => a.GameId == (long)gameId;
+list =  context.RuleWord.Where(predicate).OrderByDescending(a => a.KeyId).Skip(skip).Take(pageSize).ToList();
+var modellist = AutoMapper.To<List<RuleWord>, List<RuleWordAdminModel>>(list);
+return modellist;
+}
+
+
+       
+
+		public bool DeleteRuleWord(int id, int m)
+        { 
+               var ruleword=new RuleWord(){ KeyId=id, IsDelete=m };
+               var entry = context.Entry(ruleword);
+               context.Set<RuleWord>().Attach(ruleword);
+               entry.Property("IsDelete").IsModified = true;
+              int rtn= context.SaveChanges();
+              return rtn > 0;
+        }
+
+
+		 public bool SaveRuleWord(RuleWordAdminModel data)
+        {
+           var domaindata=  AutoMapper.To<RuleWordAdminModel, RuleWord>(data);
+            context.RuleWord.Add(domaindata);
+            var rtn= context.SaveChanges();
+            return true;
+        }
+
+		 public bool ModRuleWord(RuleWordAdminModel data)
+        {
+            var domaindata=  AutoMapper.To<RuleWordAdminModel, RuleWord>(data);
+            var entry = context.Entry(domaindata);
+            context.Set<RuleWord>().Attach(domaindata);
+            entry.State = EntityState.Modified;
+            int rtn = context.SaveChanges();
+            return rtn > 0;
+        }
+
+	    public RuleWord GetRuleWord(int id)
+        {
+            var model = context.RuleWord.Find(id);
+            return model;
+        }
+
+
+
+		#endregion end RuleWord
+
+		}

@@ -1,0 +1,69 @@
+﻿      [Auth]
+    public class ##Controller : ControllerBase
+    {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(##Controller));
+        ##Service _service = null;
+        //
+        // GET: /SystemCenter/
+        public ##Controller()
+        {
+            _service = new ##Service();
+        }
+
+
+
+
+		#region begin ActUserAttention
+
+		public ActionResult ActUserAttentionList(int page=1)
+        {
+            int p = page <= 0 ? 1 : page;
+            int pageSize = 100;
+            int skip = (p - 1) * pageSize;
+            int totalCount =_service.GetActUserAttentionTotalCount(GameId);
+            Pagination pagination = new Pagination(totalCount, p, pageSize);
+            ViewBag.Pagination = pagination;
+            List<ActUserAttentionAdminModel> list =_service.GetActUserAttentionList(GameId,skip,pageSize);
+            if (list == null)
+            {
+                list = new List<ActUserAttention>();
+            }
+            return View(list);
+        }
+
+         [HttpGet]
+        public string GetActUserAttention_Ajax(int id)
+        {
+            var rtn = _service.GetActUserAttention(id);
+
+            return JsonConvert.SerializeObject(rtn);
+        }
+
+         [HttpPost]
+         public JsonResult SaveActUserAttention_Ajax(ActUserAttentionAdminModel data)
+         {
+             log.InfoFormat("用户：{0}, 修改ActUserAttention: {1} ", Session["AdminUser"], JsonConvert.SerializeObject(data));
+			 bool rtn = false;
+            if (data.{{pk}} > 0)
+            {
+                 rtn = _service.ModActUserAttention(data); 
+            }
+            else
+            {
+                 rtn = _service.SaveActUserAttention(data);
+            }
+             return Json(rtn);
+         }
+
+		        //删除
+        [HttpPost]
+        public JsonResult DeleteActUserAttention_Ajax(int id, int m)
+        {  log.InfoFormat("用户：{0}, 修改ActUserAttention: id:{1}, m:{2} ", Session["AdminUser"], id,m);
+            bool isSuc = _service.DeleteActUserAttention(id, m);
+            return Json(isSuc);
+        }
+
+		 #endregion end ActUserAttention
+
+
+   }

@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  p Welcome to jade
+    select(id='dblist')
+      option(value='请选择') 请选择
+      each item in dblist
+        option(value=item) #{item}
+
+     select(id='tablelist')
+         option(value='请选择') 请选择
+
+      select(id='collist' multiple='multiple' size='10')
+          option(value='请选择') 请选择
+
+       button(id='save') Save
+
+

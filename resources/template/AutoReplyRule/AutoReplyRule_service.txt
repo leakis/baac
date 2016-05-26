@@ -1,0 +1,66 @@
+﻿      
+ public class SystemCenterService
+    {
+	   WeiXinEntities context = new WeiXinEntities();
+
+	   #region begin AutoReplyRule
+
+       public int GetAutoReplyRuleTotalCount(GameId gameId)
+{
+Expression<Func<AutoReplyRule, bool>> predicate = a => a.GameId == (long)gameId;
+int totalCount = 0;
+totalCount = context.AutoReplyRule.Where(predicate).Count();
+return totalCount;
+}
+public List<AutoReplyRuleAdminModel> GetAutoReplyRuleList(GameId gameId,int skip, int pageSize)
+{
+{List<AutoReplyRule> list = null;
+Expression<Func<AutoReplyRule, bool>> predicate = a => a.GameId == (long)gameId;
+list =  context.AutoReplyRule.Where(predicate).OrderByDescending(a => a.RuleId).Skip(skip).Take(pageSize).ToList();
+var modellist = AutoMapper.To<List<AutoReplyRule>, List<AutoReplyRuleAdminModel>>(list);
+return modellist;
+}
+
+
+       
+
+		public bool DeleteAutoReplyRule(int id, int m)
+        { 
+               var autoreplyrule=new AutoReplyRule(){ RuleId=id, IsDelete=m };
+               var entry = context.Entry(autoreplyrule);
+               context.Set<AutoReplyRule>().Attach(autoreplyrule);
+               entry.Property("IsDelete").IsModified = true;
+              int rtn= context.SaveChanges();
+              return rtn > 0;
+        }
+
+
+		 public bool SaveAutoReplyRule(AutoReplyRuleAdminModel data)
+        {
+           var domaindata=  AutoMapper.To<AutoReplyRuleAdminModel, AutoReplyRule>(data);
+            context.AutoReplyRule.Add(domaindata);
+            var rtn= context.SaveChanges();
+            return true;
+        }
+
+		 public bool ModAutoReplyRule(AutoReplyRuleAdminModel data)
+        {
+            var domaindata=  AutoMapper.To<AutoReplyRuleAdminModel, AutoReplyRule>(data);
+            var entry = context.Entry(domaindata);
+            context.Set<AutoReplyRule>().Attach(domaindata);
+            entry.State = EntityState.Modified;
+            int rtn = context.SaveChanges();
+            return rtn > 0;
+        }
+
+	    public AutoReplyRule GetAutoReplyRule(int id)
+        {
+            var model = context.AutoReplyRule.Find(id);
+            return model;
+        }
+
+
+
+		#endregion end AutoReplyRule
+
+		}

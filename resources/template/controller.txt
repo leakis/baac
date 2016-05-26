@@ -1,0 +1,69 @@
+﻿      [Auth]
+    public class ##Controller : ControllerBase
+    {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(##Controller));
+        ##Service _service = null;
+        //
+        // GET: /SystemCenter/
+        public ##Controller()
+        {
+            _service = new ##Service();
+        }
+
+
+
+
+		#region begin {{table}}
+
+		public ActionResult {{table}}List(int page=1{{search_pa}})
+        {
+            int p = page <= 0 ? 1 : page;
+            int pageSize = 100;
+            int skip = (p - 1) * pageSize;
+            int totalCount =_service.Get{{table}}TotalCount(GameId{{search_p}});
+            Pagination pagination = new Pagination(totalCount, p, pageSize);
+            ViewBag.Pagination = pagination;
+            List<{{table}}AdminModel> list =_service.Get{{table}}List(GameId,skip,pageSize{{search_p}});
+            if (list == null)
+            {
+                list = new List<{{table}}>();
+            }
+            return View(list);
+        }
+
+         [HttpGet]
+        public string Get{{table}}_Ajax(int id)
+        {
+            var rtn = _service.Get{{table}}(id);
+
+            return JsonConvert.SerializeObject(rtn);
+        }
+
+         [HttpPost]
+         public JsonResult Save{{table}}_Ajax({{table}}AdminModel data)
+         {
+             log.InfoFormat("用户：{0}, 修改{{table}}: {1} ", Session["AdminUser"], JsonConvert.SerializeObject(data));
+			 bool rtn = false;
+            if (data.{{pk}} > 0)
+            {
+                 rtn = _service.Mod{{table}}(data); 
+            }
+            else
+            {
+                 rtn = _service.Save{{table}}(data);
+            }
+             return Json(rtn);
+         }
+
+		        //删除
+        [HttpPost]
+        public JsonResult Delete{{table}}_Ajax(int id, int m)
+        {  log.InfoFormat("用户：{0}, 修改{{table}}: id:{1}, m:{2} ", Session["AdminUser"], id,m);
+            bool isSuc = _service.Delete{{table}}(id, m);
+            return Json(isSuc);
+        }
+
+		 #endregion end {{table}}
+
+
+   }

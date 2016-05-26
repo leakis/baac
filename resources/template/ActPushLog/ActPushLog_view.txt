@@ -1,0 +1,297 @@
+﻿@model  IEnumerable<WeiXin.Domain.Model.ActPushLog>
+
+@{
+    ViewBag.Title = "#标题#";
+}
+
+
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <!-- #section:basics/content.breadcrumbs -->
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="ace-icon fa fa-home home-icon"></i>
+                    <a href="#">#标题1#</a>
+                </li>
+
+                <li>
+                    <a href="#">#标题2#</a>
+                </li>
+
+            </ul><!-- /.breadcrumb -->
+            <!-- #section:basics/content.searchbox -->
+            <div class="nav-search hidden" id="nav-search">
+                <form class="form-search">
+                    
+                    <span>
+                        <button class="btn btn-xs btn-primary" id="btn_search">
+                            <i class="ace-icon fa fa-search">搜&nbsp;&nbsp;&nbsp;索</i>
+
+                        </button>
+                    </span>
+                </form>
+            </div><!-- /.nav-search -->
+            <!-- /section:basics/content.searchbox -->
+        </div>
+
+        <!-- /section:basics/content.breadcrumbs -->
+        <div class="page-content">
+            <!-- #section:settings.box -->
+            <!-- /.ace-settings-container -->
+            <!-- /section:settings.box -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- PAGE CONTENT BEGINS -->
+                    <span style="color:red; display:none;">注：</span>
+                    <div class="center hidden">
+                    <button class="btn btn-info" data-toggle="modal" onclick="create()" data-target="#exampleModal">
+                        <i class="ace-icon fa fa-pencil">添加</i>
+                    </button>
+                    </div>
+                    <table  class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+
+                                <th class="bg-primary">操作</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach(var item in Model)
+                            { 
+                            <tr class="">
+                            <td>@item.LogId</td>
+<td>@item.UserId</td>
+<td>@item.CalendarId</td>
+<td>@item.LogDate</td>
+<td>@item.PushMessage</td>
+<td>@item.ReturnMessage</td>
+<td>@item.ReturnCode</td>
+<td>
+<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#exampleModal" onclick="get(LogId)">
+<i class="ace-icon fa fa-pencil bigger-120" title="编辑"></i>
+</button>
+<button class="btn btn-xs btn-danger" onclick="deletedata(@item.LogId,1)">
+<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
+</button>
+</td>
+
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!---------pageing begin-->
+                    <div style="width:60%">
+                        <div class="dataTables_paginate paging_simple_numbers" >
+                            @Html.Partial("../Shared/PartialPaging")
+                        </div>
+                    </div>
+                    <!---------paging end------------->
+                    <!-- PAGE CONTENT ENDS -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div>
+</div>
+<!--------------end main-->
+
+<!---------mod begin-------------->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="h_title_label">编辑#title#</h4> <div id="edit_alert" class="alert alert-success hidden"></div>
+            </div>
+            <div class="modal-body">
+                <form id="form_mod">
+                    <div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_UserId" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_CalendarId" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_LogDate" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_PushMessage" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_ReturnMessage" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_ReturnCode" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+
+                    <input type="hidden" id="hd_id" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn_m_save" onclick="save()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------mod end------------->
+<style>
+    .lblwidth {
+        width: 130px;
+    }
+</style>
+
+<script>
+    function get(id) {
+        $("#btn_m_save").attr("disabled", false);
+        $("#h_title_label").text("编辑");
+        $.ajax({
+            type: "get",
+            url: "/##/GetActPushLog_Ajax?random=" + Math.random(),
+            data: { id: id },
+            dataType: 'json',
+            success: function (data) {
+                $("#hd_id").val(id);
+                $("#in_UserId").val(data.UserId);"
+$("#in_CalendarId").val(data.CalendarId);"
+$("#in_LogDate").val(data.LogDate);"
+$("#in_PushMessage").val(data.PushMessage);"
+$("#in_ReturnMessage").val(data.ReturnMessage);"
+$("#in_ReturnCode").val(data.ReturnCode);"
+
+            }
+        });
+
+    }
+
+
+    function save() {
+        var data = new Object();
+        //data.Id = $("#hd_id").val();
+        data.LogId = $("#hd_id").val();
+data.UserId = $("#in_UserId").val();
+data.CalendarId = $("#in_CalendarId").val();
+data.LogDate = $("#in_LogDate").val();
+data.PushMessage = $("#in_PushMessage").val();
+data.ReturnMessage = $("#in_ReturnMessage").val();
+data.ReturnCode = $("#in_ReturnCode").val();
+
+
+        $("#btn_m_save").attr("disabled", true);
+        $.ajax({
+            type: "post",
+            url: "/##/SaveActPushLog_Ajax?random=" + Math.random(),
+            data: data,
+            dataType: 'json',
+            success: function (d) {
+                if (d) {
+                    $("#edit_alert").removeClass("alert-danger hidden").addClass("alert-success");
+                    $("#edit_alert").text("恭喜，修改成功");
+                    setTimeout(function () {
+                        $('#exampleModal').modal('toggle')
+                        location.reload();
+                    }, 500);
+
+                }
+                else {
+                    $("#edit_alert").removeClass("alert-success hidden").addClass("alert-danger");
+                    $("#edit_alert").text("修改失败！！");
+                    $("#btn_m_save").attr("disabled", false);
+                }
+            }
+        });
+
+    }
+
+
+    function create() {
+        $("#btn_m_save").attr("disabled", false);
+        $("#h_title_label").text("添加");
+        //set all input empty
+        $("#hd_id").val("");
+        $("#in_UserId").val("");
+$("#in_CalendarId").val("");
+$("#in_LogDate").val("");
+$("#in_PushMessage").val("");
+$("#in_ReturnMessage").val("");
+$("#in_ReturnCode").val("");
+
+    }
+
+
+    function deletedata(id, m) {
+        $.ajax({
+            type: "post",
+            url: "/##/DeleteActPushLog_Ajax?random=" + Math.random(),
+            data: { id: id, m: m },
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    location.reload();
+                }
+                else {
+
+                }
+            }
+        });
+
+    }
+
+    $(function () {
+        //$("#nav_menu_left_sns").addClass("active open");
+        var nowindex=parseURL(location.href).params.page;
+        if(nowindex!=undefined)
+        {
+            $("#page_index_"+nowindex).css("color","#FF0000");
+        }
+        //initPage();
+        $("#pagination a").click(function (event) {
+            event.preventDefault();
+            var href = location.href;
+            var host=location.host;
+            var datapage=$(this).attr("m-data-page");
+            var dataname = $(this).attr("m-data-name");
+            var isdisable = $(this).attr("m-data-disabled");
+            if (isdisable=='true')
+            {
+                alert("不能再翻页啦");
+                return false;
+            }
+
+            var cquery=allPrpos(parseURL(href).params);
+
+            location.href ="http://"+host + "/sns/ActPushLoglist?page=" + datapage+cquery;
+
+        });
+
+        //search
+        $("#btn_search").click(function(event){
+            event.preventDefault();
+            
+   var href = location.href;
+ var host=location.host;
+location.href="http://"+host + "/sns/ActPushLoglist?"
+        })
+
+    })
+</script>

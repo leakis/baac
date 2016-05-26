@@ -1,0 +1,69 @@
+﻿      [Auth]
+    public class ##Controller : ControllerBase
+    {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(##Controller));
+        ##Service _service = null;
+        //
+        // GET: /SystemCenter/
+        public ##Controller()
+        {
+            _service = new ##Service();
+        }
+
+
+
+
+		#region begin GiftPackageMapping
+
+		public ActionResult GiftPackageMappingList(int page=1)
+        {
+            int p = page <= 0 ? 1 : page;
+            int pageSize = 100;
+            int skip = (p - 1) * pageSize;
+            int totalCount =_service.GetGiftPackageMappingTotalCount(GameId);
+            Pagination pagination = new Pagination(totalCount, p, pageSize);
+            ViewBag.Pagination = pagination;
+            List<GiftPackageMappingAdminModel> list =_service.GetGiftPackageMappingList(GameId,skip,pageSize);
+            if (list == null)
+            {
+                list = new List<GiftPackageMapping>();
+            }
+            return View(list);
+        }
+
+         [HttpGet]
+        public string GetGiftPackageMapping_Ajax(int id)
+        {
+            var rtn = _service.GetGiftPackageMapping(id);
+
+            return JsonConvert.SerializeObject(rtn);
+        }
+
+         [HttpPost]
+         public JsonResult SaveGiftPackageMapping_Ajax(GiftPackageMappingAdminModel data)
+         {
+             log.InfoFormat("用户：{0}, 修改GiftPackageMapping: {1} ", Session["AdminUser"], JsonConvert.SerializeObject(data));
+			 bool rtn = false;
+            if (data.{{pk}} > 0)
+            {
+                 rtn = _service.ModGiftPackageMapping(data); 
+            }
+            else
+            {
+                 rtn = _service.SaveGiftPackageMapping(data);
+            }
+             return Json(rtn);
+         }
+
+		        //删除
+        [HttpPost]
+        public JsonResult DeleteGiftPackageMapping_Ajax(int id, int m)
+        {  log.InfoFormat("用户：{0}, 修改GiftPackageMapping: id:{1}, m:{2} ", Session["AdminUser"], id,m);
+            bool isSuc = _service.DeleteGiftPackageMapping(id, m);
+            return Json(isSuc);
+        }
+
+		 #endregion end GiftPackageMapping
+
+
+   }

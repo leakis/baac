@@ -1,0 +1,69 @@
+﻿      [Auth]
+    public class ##Controller : ControllerBase
+    {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(##Controller));
+        ##Service _service = null;
+        //
+        // GET: /SystemCenter/
+        public ##Controller()
+        {
+            _service = new ##Service();
+        }
+
+
+
+
+		#region begin RuleWord
+
+		public ActionResult RuleWordList(int page=1)
+        {
+            int p = page <= 0 ? 1 : page;
+            int pageSize = 100;
+            int skip = (p - 1) * pageSize;
+            int totalCount =_service.GetRuleWordTotalCount(GameId);
+            Pagination pagination = new Pagination(totalCount, p, pageSize);
+            ViewBag.Pagination = pagination;
+            List<RuleWordAdminModel> list =_service.GetRuleWordList(GameId,skip,pageSize);
+            if (list == null)
+            {
+                list = new List<RuleWord>();
+            }
+            return View(list);
+        }
+
+         [HttpGet]
+        public string GetRuleWord_Ajax(int id)
+        {
+            var rtn = _service.GetRuleWord(id);
+
+            return JsonConvert.SerializeObject(rtn);
+        }
+
+         [HttpPost]
+         public JsonResult SaveRuleWord_Ajax(RuleWordAdminModel data)
+         {
+             log.InfoFormat("用户：{0}, 修改RuleWord: {1} ", Session["AdminUser"], JsonConvert.SerializeObject(data));
+			 bool rtn = false;
+            if (data.{{pk}} > 0)
+            {
+                 rtn = _service.ModRuleWord(data); 
+            }
+            else
+            {
+                 rtn = _service.SaveRuleWord(data);
+            }
+             return Json(rtn);
+         }
+
+		        //删除
+        [HttpPost]
+        public JsonResult DeleteRuleWord_Ajax(int id, int m)
+        {  log.InfoFormat("用户：{0}, 修改RuleWord: id:{1}, m:{2} ", Session["AdminUser"], id,m);
+            bool isSuc = _service.DeleteRuleWord(id, m);
+            return Json(isSuc);
+        }
+
+		 #endregion end RuleWord
+
+
+   }

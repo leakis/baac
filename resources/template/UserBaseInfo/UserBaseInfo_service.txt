@@ -1,0 +1,66 @@
+﻿      
+ public class SystemCenterService
+    {
+	   WeiXinEntities context = new WeiXinEntities();
+
+	   #region begin UserBaseInfo
+
+       public int GetUserBaseInfoTotalCount(GameId gameId)
+{
+Expression<Func<UserBaseInfo, bool>> predicate = a => a.GameId == (long)gameId;
+int totalCount = 0;
+totalCount = context.UserBaseInfo.Where(predicate).Count();
+return totalCount;
+}
+public List<UserBaseInfoAdminModel> GetUserBaseInfoList(GameId gameId,int skip, int pageSize)
+{
+{List<UserBaseInfo> list = null;
+Expression<Func<UserBaseInfo, bool>> predicate = a => a.GameId == (long)gameId;
+list =  context.UserBaseInfo.Where(predicate).OrderByDescending(a => a.UserId).Skip(skip).Take(pageSize).ToList();
+var modellist = AutoMapper.To<List<UserBaseInfo>, List<UserBaseInfoAdminModel>>(list);
+return modellist;
+}
+
+
+       
+
+		public bool DeleteUserBaseInfo(int id, int m)
+        { 
+               var userbaseinfo=new UserBaseInfo(){ UserId=id, IsDelete=m };
+               var entry = context.Entry(userbaseinfo);
+               context.Set<UserBaseInfo>().Attach(userbaseinfo);
+               entry.Property("IsDelete").IsModified = true;
+              int rtn= context.SaveChanges();
+              return rtn > 0;
+        }
+
+
+		 public bool SaveUserBaseInfo(UserBaseInfoAdminModel data)
+        {
+           var domaindata=  AutoMapper.To<UserBaseInfoAdminModel, UserBaseInfo>(data);
+            context.UserBaseInfo.Add(domaindata);
+            var rtn= context.SaveChanges();
+            return true;
+        }
+
+		 public bool ModUserBaseInfo(UserBaseInfoAdminModel data)
+        {
+            var domaindata=  AutoMapper.To<UserBaseInfoAdminModel, UserBaseInfo>(data);
+            var entry = context.Entry(domaindata);
+            context.Set<UserBaseInfo>().Attach(domaindata);
+            entry.State = EntityState.Modified;
+            int rtn = context.SaveChanges();
+            return rtn > 0;
+        }
+
+	    public UserBaseInfo GetUserBaseInfo(int id)
+        {
+            var model = context.UserBaseInfo.Find(id);
+            return model;
+        }
+
+
+
+		#endregion end UserBaseInfo
+
+		}

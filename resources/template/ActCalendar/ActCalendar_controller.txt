@@ -1,0 +1,69 @@
+﻿      [Auth]
+    public class ##Controller : ControllerBase
+    {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(##Controller));
+        ##Service _service = null;
+        //
+        // GET: /SystemCenter/
+        public ##Controller()
+        {
+            _service = new ##Service();
+        }
+
+
+
+
+		#region begin ActCalendar
+
+		public ActionResult ActCalendarList(int page=1)
+        {
+            int p = page <= 0 ? 1 : page;
+            int pageSize = 100;
+            int skip = (p - 1) * pageSize;
+            int totalCount =_service.GetActCalendarTotalCount(GameId);
+            Pagination pagination = new Pagination(totalCount, p, pageSize);
+            ViewBag.Pagination = pagination;
+            List<ActCalendarAdminModel> list =_service.GetActCalendarList(GameId,skip,pageSize);
+            if (list == null)
+            {
+                list = new List<ActCalendar>();
+            }
+            return View(list);
+        }
+
+         [HttpGet]
+        public string GetActCalendar_Ajax(int id)
+        {
+            var rtn = _service.GetActCalendar(id);
+
+            return JsonConvert.SerializeObject(rtn);
+        }
+
+         [HttpPost]
+         public JsonResult SaveActCalendar_Ajax(ActCalendarAdminModel data)
+         {
+             log.InfoFormat("用户：{0}, 修改ActCalendar: {1} ", Session["AdminUser"], JsonConvert.SerializeObject(data));
+			 bool rtn = false;
+            if (data.{{pk}} > 0)
+            {
+                 rtn = _service.ModActCalendar(data); 
+            }
+            else
+            {
+                 rtn = _service.SaveActCalendar(data);
+            }
+             return Json(rtn);
+         }
+
+		        //删除
+        [HttpPost]
+        public JsonResult DeleteActCalendar_Ajax(int id, int m)
+        {  log.InfoFormat("用户：{0}, 修改ActCalendar: id:{1}, m:{2} ", Session["AdminUser"], id,m);
+            bool isSuc = _service.DeleteActCalendar(id, m);
+            return Json(isSuc);
+        }
+
+		 #endregion end ActCalendar
+
+
+   }

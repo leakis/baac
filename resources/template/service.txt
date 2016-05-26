@@ -1,0 +1,51 @@
+﻿      
+ public class SystemCenterService
+    {
+	   {{db}}Entities context = new {{db}}Entities();
+
+	   #region begin {{table}}
+
+       {{search_count}}
+
+       {{search_list}}
+
+		public bool Delete{{table}}(int id, int m)
+        { 
+               var {{table_l}}=new {{table}}(){ {{pk}}=id, IsDelete=m };
+               var entry = context.Entry({{table_l}});
+               context.Set<{{table}}>().Attach({{table_l}});
+               entry.Property("IsDelete").IsModified = true;
+              int rtn= context.SaveChanges();
+              return rtn > 0;
+        }
+
+
+		 public bool Save{{table}}({{table}}AdminModel data)
+        {
+           var domaindata=  AutoMapper.To<{{table}}AdminModel, {{table}}>(data);
+            context.{{table}}.Add(domaindata);
+            var rtn= context.SaveChanges();
+            return true;
+        }
+
+		 public bool Mod{{table}}({{table}}AdminModel data)
+        {
+            var domaindata=  AutoMapper.To<{{table}}AdminModel, {{table}}>(data);
+            var entry = context.Entry(domaindata);
+            context.Set<{{table}}>().Attach(domaindata);
+            entry.State = EntityState.Modified;
+            int rtn = context.SaveChanges();
+            return rtn > 0;
+        }
+
+	    public {{table}} Get{{table}}(int id)
+        {
+            var model = context.{{table}}.Find(id);
+            return model;
+        }
+
+
+
+		#endregion end {{table}}
+
+		}

@@ -1,0 +1,66 @@
+﻿      
+ public class SystemCenterService
+    {
+	   WeiXinEntities context = new WeiXinEntities();
+
+	   #region begin GiftPackageMapping
+
+       public int GetGiftPackageMappingTotalCount(GameId gameId)
+{
+Expression<Func<GiftPackageMapping, bool>> predicate = a => a.GameId == (long)gameId;
+int totalCount = 0;
+totalCount = context.GiftPackageMapping.Where(predicate).Count();
+return totalCount;
+}
+public List<GiftPackageMappingAdminModel> GetGiftPackageMappingList(GameId gameId,int skip, int pageSize)
+{
+{List<GiftPackageMapping> list = null;
+Expression<Func<GiftPackageMapping, bool>> predicate = a => a.GameId == (long)gameId;
+list =  context.GiftPackageMapping.Where(predicate).OrderByDescending(a => a.).Skip(skip).Take(pageSize).ToList();
+var modellist = AutoMapper.To<List<GiftPackageMapping>, List<GiftPackageMappingAdminModel>>(list);
+return modellist;
+}
+
+
+       
+
+		public bool DeleteGiftPackageMapping(int id, int m)
+        { 
+               var giftpackagemapping=new GiftPackageMapping(){ =id, IsDelete=m };
+               var entry = context.Entry(giftpackagemapping);
+               context.Set<GiftPackageMapping>().Attach(giftpackagemapping);
+               entry.Property("IsDelete").IsModified = true;
+              int rtn= context.SaveChanges();
+              return rtn > 0;
+        }
+
+
+		 public bool SaveGiftPackageMapping(GiftPackageMappingAdminModel data)
+        {
+           var domaindata=  AutoMapper.To<GiftPackageMappingAdminModel, GiftPackageMapping>(data);
+            context.GiftPackageMapping.Add(domaindata);
+            var rtn= context.SaveChanges();
+            return true;
+        }
+
+		 public bool ModGiftPackageMapping(GiftPackageMappingAdminModel data)
+        {
+            var domaindata=  AutoMapper.To<GiftPackageMappingAdminModel, GiftPackageMapping>(data);
+            var entry = context.Entry(domaindata);
+            context.Set<GiftPackageMapping>().Attach(domaindata);
+            entry.State = EntityState.Modified;
+            int rtn = context.SaveChanges();
+            return rtn > 0;
+        }
+
+	    public GiftPackageMapping GetGiftPackageMapping(int id)
+        {
+            var model = context.GiftPackageMapping.Find(id);
+            return model;
+        }
+
+
+
+		#endregion end GiftPackageMapping
+
+		}

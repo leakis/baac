@@ -1,0 +1,66 @@
+﻿      
+ public class SystemCenterService
+    {
+	   WeiXinEntities context = new WeiXinEntities();
+
+	   #region begin GiftPackage
+
+       public int GetGiftPackageTotalCount(GameId gameId)
+{
+Expression<Func<GiftPackage, bool>> predicate = a => a.GameId == (long)gameId;
+int totalCount = 0;
+totalCount = context.GiftPackage.Where(predicate).Count();
+return totalCount;
+}
+public List<GiftPackageAdminModel> GetGiftPackageList(GameId gameId,int skip, int pageSize)
+{
+{List<GiftPackage> list = null;
+Expression<Func<GiftPackage, bool>> predicate = a => a.GameId == (long)gameId;
+list =  context.GiftPackage.Where(predicate).OrderByDescending(a => a.).Skip(skip).Take(pageSize).ToList();
+var modellist = AutoMapper.To<List<GiftPackage>, List<GiftPackageAdminModel>>(list);
+return modellist;
+}
+
+
+       
+
+		public bool DeleteGiftPackage(int id, int m)
+        { 
+               var giftpackage=new GiftPackage(){ =id, IsDelete=m };
+               var entry = context.Entry(giftpackage);
+               context.Set<GiftPackage>().Attach(giftpackage);
+               entry.Property("IsDelete").IsModified = true;
+              int rtn= context.SaveChanges();
+              return rtn > 0;
+        }
+
+
+		 public bool SaveGiftPackage(GiftPackageAdminModel data)
+        {
+           var domaindata=  AutoMapper.To<GiftPackageAdminModel, GiftPackage>(data);
+            context.GiftPackage.Add(domaindata);
+            var rtn= context.SaveChanges();
+            return true;
+        }
+
+		 public bool ModGiftPackage(GiftPackageAdminModel data)
+        {
+            var domaindata=  AutoMapper.To<GiftPackageAdminModel, GiftPackage>(data);
+            var entry = context.Entry(domaindata);
+            context.Set<GiftPackage>().Attach(domaindata);
+            entry.State = EntityState.Modified;
+            int rtn = context.SaveChanges();
+            return rtn > 0;
+        }
+
+	    public GiftPackage GetGiftPackage(int id)
+        {
+            var model = context.GiftPackage.Find(id);
+            return model;
+        }
+
+
+
+		#endregion end GiftPackage
+
+		}

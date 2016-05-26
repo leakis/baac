@@ -1,0 +1,66 @@
+﻿      
+ public class SystemCenterService
+    {
+	   WeiXinEntities context = new WeiXinEntities();
+
+	   #region begin UserSignInActives
+
+       public int GetUserSignInActivesTotalCount(GameId gameId)
+{
+Expression<Func<UserSignInActives, bool>> predicate = a => a.GameId == (long)gameId;
+int totalCount = 0;
+totalCount = context.UserSignInActives.Where(predicate).Count();
+return totalCount;
+}
+public List<UserSignInActivesAdminModel> GetUserSignInActivesList(GameId gameId,int skip, int pageSize)
+{
+{List<UserSignInActives> list = null;
+Expression<Func<UserSignInActives, bool>> predicate = a => a.GameId == (long)gameId;
+list =  context.UserSignInActives.Where(predicate).OrderByDescending(a => a.ActId).Skip(skip).Take(pageSize).ToList();
+var modellist = AutoMapper.To<List<UserSignInActives>, List<UserSignInActivesAdminModel>>(list);
+return modellist;
+}
+
+
+       
+
+		public bool DeleteUserSignInActives(int id, int m)
+        { 
+               var usersigninactives=new UserSignInActives(){ ActId=id, IsDelete=m };
+               var entry = context.Entry(usersigninactives);
+               context.Set<UserSignInActives>().Attach(usersigninactives);
+               entry.Property("IsDelete").IsModified = true;
+              int rtn= context.SaveChanges();
+              return rtn > 0;
+        }
+
+
+		 public bool SaveUserSignInActives(UserSignInActivesAdminModel data)
+        {
+           var domaindata=  AutoMapper.To<UserSignInActivesAdminModel, UserSignInActives>(data);
+            context.UserSignInActives.Add(domaindata);
+            var rtn= context.SaveChanges();
+            return true;
+        }
+
+		 public bool ModUserSignInActives(UserSignInActivesAdminModel data)
+        {
+            var domaindata=  AutoMapper.To<UserSignInActivesAdminModel, UserSignInActives>(data);
+            var entry = context.Entry(domaindata);
+            context.Set<UserSignInActives>().Attach(domaindata);
+            entry.State = EntityState.Modified;
+            int rtn = context.SaveChanges();
+            return rtn > 0;
+        }
+
+	    public UserSignInActives GetUserSignInActives(int id)
+        {
+            var model = context.UserSignInActives.Find(id);
+            return model;
+        }
+
+
+
+		#endregion end UserSignInActives
+
+		}

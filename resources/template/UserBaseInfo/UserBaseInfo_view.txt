@@ -1,0 +1,414 @@
+﻿@model  IEnumerable<WeiXin.Domain.Model.UserBaseInfo>
+
+@{
+    ViewBag.Title = "#标题#";
+}
+
+
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <!-- #section:basics/content.breadcrumbs -->
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="ace-icon fa fa-home home-icon"></i>
+                    <a href="#">#标题1#</a>
+                </li>
+
+                <li>
+                    <a href="#">#标题2#</a>
+                </li>
+
+            </ul><!-- /.breadcrumb -->
+            <!-- #section:basics/content.searchbox -->
+            <div class="nav-search hidden" id="nav-search">
+                <form class="form-search">
+                    
+                    <span>
+                        <button class="btn btn-xs btn-primary" id="btn_search">
+                            <i class="ace-icon fa fa-search">搜&nbsp;&nbsp;&nbsp;索</i>
+
+                        </button>
+                    </span>
+                </form>
+            </div><!-- /.nav-search -->
+            <!-- /section:basics/content.searchbox -->
+        </div>
+
+        <!-- /section:basics/content.breadcrumbs -->
+        <div class="page-content">
+            <!-- #section:settings.box -->
+            <!-- /.ace-settings-container -->
+            <!-- /section:settings.box -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- PAGE CONTENT BEGINS -->
+                    <span style="color:red; display:none;">注：</span>
+                    <div class="center hidden">
+                    <button class="btn btn-info" data-toggle="modal" onclick="create()" data-target="#exampleModal">
+                        <i class="ace-icon fa fa-pencil">添加</i>
+                    </button>
+                    </div>
+                    <table  class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+<th class="bg-primary">null</th>
+
+                                <th class="bg-primary">操作</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach(var item in Model)
+                            { 
+                            <tr class="">
+                            <td>@item.UserId</td>
+<td>@item.OpenId</td>
+<td>@item.NickName</td>
+<td>@item.Sex</td>
+<td>@item.City</td>
+<td>@item.Country</td>
+<td>@item.Province</td>
+<td>@item.Language</td>
+<td>@item.HeadImgUrl</td>
+<td>@item.Subscribe_Time</td>
+<td>@item.UnionId</td>
+<td>@item.Remark</td>
+<td>@item.GroupId</td>
+<td>@item.Subscribe</td>
+<td>@item.UserCharacterId</td>
+<td>@item.Score</td>
+<td>@item.LastSignDate</td>
+<td>@item.SignKeepDays</td>
+<td>@item.CreateTime</td>
+<td>@item.IsDelete</td>
+<td>
+<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#exampleModal" onclick="get(UserId)">
+<i class="ace-icon fa fa-pencil bigger-120" title="编辑"></i>
+</button>
+<button class="btn btn-xs btn-danger" onclick="deletedata(@item.UserId,1)">
+<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
+</button>
+</td>
+
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!---------pageing begin-->
+                    <div style="width:60%">
+                        <div class="dataTables_paginate paging_simple_numbers" >
+                            @Html.Partial("../Shared/PartialPaging")
+                        </div>
+                    </div>
+                    <!---------paging end------------->
+                    <!-- PAGE CONTENT ENDS -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.page-content -->
+    </div>
+</div>
+<!--------------end main-->
+
+<!---------mod begin-------------->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="h_title_label">编辑#title#</h4> <div id="edit_alert" class="alert alert-success hidden"></div>
+            </div>
+            <div class="modal-body">
+                <form id="form_mod">
+                    <div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_OpenId" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_NickName" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_Sex" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_City" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_Country" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_Province" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_Language" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_HeadImgUrl" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_Subscribe_Time" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_UnionId" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_Remark" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_GroupId" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_Subscribe" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_UserCharacterId" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_Score" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_LastSignDate" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_SignKeepDays" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_CreateTime" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+<div class="input-group"
+<span class="input-group-addon  lblwidth" >null</span>
+<input type="text" class="form-control" id="in_IsDelete" style="width: 400px;" placeholder="请输入null" aria-describedby="basic-addon1">
+</div>
+
+                    <input type="hidden" id="hd_id" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn_m_save" onclick="save()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!----------mod end------------->
+<style>
+    .lblwidth {
+        width: 130px;
+    }
+</style>
+
+<script>
+    function get(id) {
+        $("#btn_m_save").attr("disabled", false);
+        $("#h_title_label").text("编辑");
+        $.ajax({
+            type: "get",
+            url: "/##/GetUserBaseInfo_Ajax?random=" + Math.random(),
+            data: { id: id },
+            dataType: 'json',
+            success: function (data) {
+                $("#hd_id").val(id);
+                $("#in_OpenId").val(data.OpenId);"
+$("#in_NickName").val(data.NickName);"
+$("#in_Sex").val(data.Sex);"
+$("#in_City").val(data.City);"
+$("#in_Country").val(data.Country);"
+$("#in_Province").val(data.Province);"
+$("#in_Language").val(data.Language);"
+$("#in_HeadImgUrl").val(data.HeadImgUrl);"
+$("#in_Subscribe_Time").val(data.Subscribe_Time);"
+$("#in_UnionId").val(data.UnionId);"
+$("#in_Remark").val(data.Remark);"
+$("#in_GroupId").val(data.GroupId);"
+$("#in_Subscribe").val(data.Subscribe);"
+$("#in_UserCharacterId").val(data.UserCharacterId);"
+$("#in_Score").val(data.Score);"
+$("#in_LastSignDate").val(data.LastSignDate);"
+$("#in_SignKeepDays").val(data.SignKeepDays);"
+$("#in_CreateTime").val(data.CreateTime);"
+$("#in_IsDelete").val(data.IsDelete);"
+
+            }
+        });
+
+    }
+
+
+    function save() {
+        var data = new Object();
+        //data.Id = $("#hd_id").val();
+        data.UserId = $("#hd_id").val();
+data.OpenId = $("#in_OpenId").val();
+data.NickName = $("#in_NickName").val();
+data.Sex = $("#in_Sex").val();
+data.City = $("#in_City").val();
+data.Country = $("#in_Country").val();
+data.Province = $("#in_Province").val();
+data.Language = $("#in_Language").val();
+data.HeadImgUrl = $("#in_HeadImgUrl").val();
+data.Subscribe_Time = $("#in_Subscribe_Time").val();
+data.UnionId = $("#in_UnionId").val();
+data.Remark = $("#in_Remark").val();
+data.GroupId = $("#in_GroupId").val();
+data.Subscribe = $("#in_Subscribe").val();
+data.UserCharacterId = $("#in_UserCharacterId").val();
+data.Score = $("#in_Score").val();
+data.LastSignDate = $("#in_LastSignDate").val();
+data.SignKeepDays = $("#in_SignKeepDays").val();
+data.CreateTime = $("#in_CreateTime").val();
+data.IsDelete = $("#in_IsDelete").val();
+
+
+        $("#btn_m_save").attr("disabled", true);
+        $.ajax({
+            type: "post",
+            url: "/##/SaveUserBaseInfo_Ajax?random=" + Math.random(),
+            data: data,
+            dataType: 'json',
+            success: function (d) {
+                if (d) {
+                    $("#edit_alert").removeClass("alert-danger hidden").addClass("alert-success");
+                    $("#edit_alert").text("恭喜，修改成功");
+                    setTimeout(function () {
+                        $('#exampleModal').modal('toggle')
+                        location.reload();
+                    }, 500);
+
+                }
+                else {
+                    $("#edit_alert").removeClass("alert-success hidden").addClass("alert-danger");
+                    $("#edit_alert").text("修改失败！！");
+                    $("#btn_m_save").attr("disabled", false);
+                }
+            }
+        });
+
+    }
+
+
+    function create() {
+        $("#btn_m_save").attr("disabled", false);
+        $("#h_title_label").text("添加");
+        //set all input empty
+        $("#hd_id").val("");
+        $("#in_OpenId").val("");
+$("#in_NickName").val("");
+$("#in_Sex").val("");
+$("#in_City").val("");
+$("#in_Country").val("");
+$("#in_Province").val("");
+$("#in_Language").val("");
+$("#in_HeadImgUrl").val("");
+$("#in_Subscribe_Time").val("");
+$("#in_UnionId").val("");
+$("#in_Remark").val("");
+$("#in_GroupId").val("");
+$("#in_Subscribe").val("");
+$("#in_UserCharacterId").val("");
+$("#in_Score").val("");
+$("#in_LastSignDate").val("");
+$("#in_SignKeepDays").val("");
+$("#in_CreateTime").val("");
+$("#in_IsDelete").val("");
+
+    }
+
+
+    function deletedata(id, m) {
+        $.ajax({
+            type: "post",
+            url: "/##/DeleteUserBaseInfo_Ajax?random=" + Math.random(),
+            data: { id: id, m: m },
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    location.reload();
+                }
+                else {
+
+                }
+            }
+        });
+
+    }
+
+    $(function () {
+        //$("#nav_menu_left_sns").addClass("active open");
+        var nowindex=parseURL(location.href).params.page;
+        if(nowindex!=undefined)
+        {
+            $("#page_index_"+nowindex).css("color","#FF0000");
+        }
+        //initPage();
+        $("#pagination a").click(function (event) {
+            event.preventDefault();
+            var href = location.href;
+            var host=location.host;
+            var datapage=$(this).attr("m-data-page");
+            var dataname = $(this).attr("m-data-name");
+            var isdisable = $(this).attr("m-data-disabled");
+            if (isdisable=='true')
+            {
+                alert("不能再翻页啦");
+                return false;
+            }
+
+            var cquery=allPrpos(parseURL(href).params);
+
+            location.href ="http://"+host + "/sns/UserBaseInfolist?page=" + datapage+cquery;
+
+        });
+
+        //search
+        $("#btn_search").click(function(event){
+            event.preventDefault();
+            
+   var href = location.href;
+ var host=location.host;
+location.href="http://"+host + "/sns/UserBaseInfolist?"
+        })
+
+    })
+</script>
