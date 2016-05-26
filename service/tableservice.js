@@ -178,9 +178,10 @@ var dbetc={
         outputstr+='}\n\n';
         outputstr+='}\n';
         var codepath = config.zippath + table;
+        console.log(codepath);
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err) {
-                var codefilepath = codepath + '\\' + table + 'AdminModel.cs';
+                var codefilepath = codepath + '/' + table + 'AdminModel.cs';
                 fs.writeFile(codefilepath, outputstr, 'utf-8', function (err) {
                 });
             }
@@ -216,7 +217,7 @@ var dbetc={
         var codepath = config.zippath;
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err) {
-                var codefilepath = codepath + '\\' + 'AdminAutoMapper.cs';
+                var codefilepath = codepath + '/' + 'AdminAutoMapper.cs';
                 fs.writeFile(codefilepath, outputstr, 'utf-8', function (err) {
                 });
             }

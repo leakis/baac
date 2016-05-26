@@ -116,7 +116,7 @@ var tplService={
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err)
             {
-                var codefilepath=codepath+'\\'+tbname+'_view.txt';
+                var codefilepath=codepath+'/'+tbname+'_view.txt';
                 fs.writeFile(codefilepath,str,'utf-8',function(err){
                 });
             }
@@ -147,7 +147,7 @@ var tplService={
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err)
             {
-                var codefilepath=codepath+'\\'+tbname+'_controller.txt';
+                var codefilepath=codepath+'/'+tbname+'_controller.txt';
                 fs.writeFile(codefilepath,str,'utf-8',function(err){
                 });
             }
@@ -165,7 +165,7 @@ var tplService={
             if(!err)
             {
 
-                var codefilepath=codepath+'\\'+tbname+'_service.txt';
+                var codefilepath=codepath+'/'+tbname+'_service.txt';
                 if(cols&&cols.length>0)
                 {
                   var searchlist= tableservice.dbetc.initSearch(tbname,cols);
