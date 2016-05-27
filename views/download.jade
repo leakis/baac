@@ -1,0 +1,18 @@
+extends layout
+
+block head
+
+ script.
+     $(function(){
+      setTimeout(function () {
+         location.href ='#{myfile}';
+     }, 5000);
+        })
+
+block content
+
+
+  h1 下载中...五秒后自动下载...
+  p 若没有自动下载
+   a( id='down' href='#{myfile}') 请点击
+

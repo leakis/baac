@@ -116,4 +116,12 @@ router.get('/zip', function(req, res, next) {
    // res.redirect('/tpl-archive.zip')
 });
 
+
+router.get('/download', function(req, res, next) {
+    var myfilename=req.query.file+'.zip';
+    console.log(myfilename);
+        res.render('download',{myfile: myfilename});
+    // res.render('index', { title: 'Express' });
+});
+
 module.exports = router;

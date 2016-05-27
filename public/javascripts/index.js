@@ -44,13 +44,32 @@ $(function () {
                 data: JSON.stringify(d),
                 type: "post",
                 success: function (data) {
-                   console.log(data);
+                    $("#zip").show();
                 },
                 error: function () {
+                    $("#zip").hide();
                     alert("系统忙");
                 }
             });
         })
+
+    $("#zip").click(function(event){
+        event.preventDefault();
+        $.ajax({
+            url: "/zip",
+            contentType: "application/json",
+            data: {},
+            type: "get",
+            success: function (data) {
+                console.log(data);
+                location.href='download?file='+data;
+            },
+            error: function () {
+                alert("系统忙");
+            }
+        });
+    })
+
 })
 
 function getcols(tbname)
