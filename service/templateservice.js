@@ -30,7 +30,7 @@ var tplService={
         var hiddensearch='hidden';
         var searchiv='';
         var searchvar='';
-        var searchvar_pa='location.href="http://"+host + "/sns/'+tbname+'list?"';
+        var searchvar_pa='location.href="http://"+host + "/##/'+tbname+'list?v=1"';
         for(var i in cols)
         {
             hiddensearch='';
@@ -55,7 +55,7 @@ var tplService={
                 searchvar+='}\n';
             }
             searchiv+='</span>\n';
-            searchvar_pa+='+"'+cols[i].ColumnName+'="+sea_'+cols[i].ColumnName;
+            searchvar_pa+='+"&'+cols[i].ColumnName+'="+sea_'+cols[i].ColumnName;
            // methodp+=cols[i].ColumnName;
         }
         searchvar+='\n   var href = location.href;\n';
@@ -75,11 +75,11 @@ var tplService={
             trtd+='<td>@item.'+alltbs[i].ColumnName+'</td>\n';
             if (!alltbs[i].IsPrimaryKey)
             {
-                formc+='<div class="input-group"\n';
+                formc+='<div class="input-group">\n';
                 formc+='<span class="input-group-addon  lblwidth" >'+alltbs[i].Description+'</span>\n';
                 formc+='<input type="text" class="form-control" id="in_'+alltbs[i].ColumnName+'" style="width: 400px;" placeholder="请输入'+alltbs[i].Description+'" aria-describedby="basic-addon1">\n';
                 formc+='</div>\n';
-                js_get+='$("#in_'+alltbs[i].ColumnName+'").val(data.'+alltbs[i].ColumnName+');"\n';
+                js_get+='$("#in_'+alltbs[i].ColumnName+'").val(data.'+alltbs[i].ColumnName+');\n';
                 js_set+='data.'+alltbs[i].ColumnName+' = $("#in_'+alltbs[i].ColumnName+'").val();\n';
                 js_create+='$("#in_'+alltbs[i].ColumnName+'").val("");\n';
             }
@@ -129,13 +129,21 @@ var tplService={
         var methodp='';
         for(var i in cols)
         {
-            var mt= myutils.utils.convertDbType2Code(cols[i].ColumnType)
-            methodparam+=',';
+            var mt= myutils.utils.convertDbType2Code(cols[i].DataType)
             methodparam+=mt;
             methodparam+=' ';
             methodparam+=cols[i].ColumnName;
+            methodparam+=',';
             methodp+=',';
             methodp+=cols[i].ColumnName;
+        }
+        var pk='';
+        for(var i in alltbs)
+        {
+            if(alltbs[i].IsPrimaryKey)
+            {
+                pk=alltbs[i].ColumnName;
+            }
         }
         //
         str=str.replace(/\{\{table}}/g,tbname);
@@ -143,6 +151,7 @@ var tplService={
         str=str.replace(/\{\{table_l}}/g,tbname.toLocaleLowerCase());
         str=str.replace(/\{\{search_pa}}/g,methodparam);
         str=str.replace(/\{\{search_p}}/g,methodp);
+        str=str.replace(/\{\{pk}}/g,pk);
         var codepath = configconst.zippath  + tbname;
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err)

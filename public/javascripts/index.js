@@ -34,7 +34,7 @@ $(function () {
             $("#collist option:selected").each(function(){ //遍历全部option
               var col=new Object();
                 col.ColumnName=$(this).val();
-                col.ColumnType=$(this).attr("data-type");
+                col.DataType=$(this).attr("data-type");
                 cols.push(col);
             });
             var d={"table":tbname,"cols":cols,dbname:dbname};

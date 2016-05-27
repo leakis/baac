@@ -22,7 +22,7 @@
 
 		 public bool Save{{table}}({{table}}AdminModel data)
         {
-           var domaindata=  AutoMapper.To<{{table}}AdminModel, {{table}}>(data);
+           var domaindata=  AdminAutoMapper.To<{{table}}AdminModel, {{table}}>(data);
             context.{{table}}.Add(domaindata);
             var rtn= context.SaveChanges();
             return true;
@@ -30,7 +30,7 @@
 
 		 public bool Mod{{table}}({{table}}AdminModel data)
         {
-            var domaindata=  AutoMapper.To<{{table}}AdminModel, {{table}}>(data);
+            var domaindata=  AdminAutoMapper.To<{{table}}AdminModel, {{table}}>(data);
             var entry = context.Entry(domaindata);
             context.Set<{{table}}>().Attach(domaindata);
             entry.State = EntityState.Modified;

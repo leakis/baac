@@ -1,4 +1,4 @@
-﻿@model  IEnumerable<{{db}}.Domain.Model.{{table}}>
+﻿@model  IEnumerable<FOApp.Admin.AdminService.Model.{{table}}AdminModel>
 
 @{
     ViewBag.Title = "#标题#";
@@ -215,7 +215,7 @@
 
             var cquery=allPrpos(parseURL(href).params);
 
-            location.href ="http://"+host + "/sns/{{table}}list?page=" + datapage+cquery;
+            location.href ="http://"+host + "/##/{{table}}list?page=" + datapage+cquery;
 
         });
 

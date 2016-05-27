@@ -47,6 +47,7 @@ router.post('/initsearch', function(req, res, next) {
                 var mytblist=[];
                 mytblist.push(table);
                 tableservice.dbetc.initAutoMapper(mytblist);
+                console.log(columnlist);
                 var outputstr = tableservice.dbetc.initAdminModel(table, columnlist);
                 templateservice.templateservice.getServiceTemplate(function (err, str) {
                     templateservice.templateservice.writeServiceTemplate(str, table, cols, columnlist);

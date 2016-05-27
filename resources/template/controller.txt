@@ -15,7 +15,7 @@
 
 		#region begin {{table}}
 
-		public ActionResult {{table}}List(int page=1{{search_pa}})
+		public ActionResult {{table}}List({{search_pa}}int page=1)
         {
             int p = page <= 0 ? 1 : page;
             int pageSize = 100;
@@ -26,7 +26,7 @@
             List<{{table}}AdminModel> list =_service.Get{{table}}List(GameId,skip,pageSize{{search_p}});
             if (list == null)
             {
-                list = new List<{{table}}>();
+                list = new List<{{table}}AdminModel>();
             }
             return View(list);
         }

@@ -25,6 +25,10 @@ var utils={
         {
             str = "byte";
         }
+        else if (t == "date")
+        {
+            str = "DateTime";
+        }
         else if (t == "datetime")
         {
             str = "DateTime";
@@ -70,7 +74,7 @@ var utils={
         if(iscount)
         {
             para+='plist.Add(new SqlParameter("@PageSize'+'", pageSize));\n';
-            para+='plist.Add(new SqlParameter("@PageIndex'+'", page));\n';
+            para+='plist.Add(new SqlParameter("@Skip'+'", skip));\n';
         }
         for(var i in names)
         {

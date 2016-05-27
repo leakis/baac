@@ -109,7 +109,7 @@ var dbetc={
         var searchsql='string sql="select Count(1) from '+table+' where 1=1 And GameId=@GameId";\n';
         for(var i in cols)
         {
-            var mt= myutils.utils.convertDbType2Code(cols[i].ColumnType)
+            var mt= myutils.utils.convertDbType2Code(cols[i].DataType);
             methodparam+=',';
             methodparam+=mt;
             methodparam+=' ';
@@ -129,10 +129,10 @@ var dbetc={
     initSearch: function (table, cols) {
         var methodparam='';
         var colnames=[];
-        var searchsql='string sql="SELECT * FROM(SELECT ROW_NUMBER() OVER ( ORDER BY {{pk}} DESC ) AS RowNUM, * FROM  (SELECT	 * from '+table+' where 1=1 AND GameId=@GameId";\n';
+        var searchsql='string sql="SELECT TOP(@PageSize) * FROM(SELECT ROW_NUMBER() OVER ( ORDER BY {{pk}} DESC ) AS RowNUM, * FROM  (SELECT	 * from '+table+' where 1=1 AND GameId=@GameId";\n';
         for(var i in cols)
         {
-            var mt= myutils.utils.convertDbType2Code(cols[i].ColumnType)
+            var mt= myutils.utils.convertDbType2Code(cols[i].DataType)
             methodparam+=',';
             methodparam+=mt;
             methodparam+=' ';
@@ -140,15 +140,15 @@ var dbetc={
             colnames.push(cols[i].ColumnName);
             searchsql+=myutils.utils.sqlcombin(cols[i].ColumnName,mt)+'\n';
         }
-        searchsql+='sql+=" ) tmp ) tmp1  WHERE   RowNUM BETWEEN ( @pageIndex - 1 ) * @pageSize + 1 AND     @pageIndex * @pageSize";\n';
-        var outputstr='public  List<'+table+'AdminModel> '+'Get'+table+'List'+'(GameId gameId,int page,int pageSize'+methodparam+')\n';
+        searchsql+='sql+=" ) tmp ) tmp1  WHERE   RowNUM >@Skip";\n';
+        var outputstr='public  List<'+table+'AdminModel> '+'Get'+table+'List'+'(GameId gameId,int skip,int pageSize'+methodparam+')\n';
         outputstr+='{\n\n';
         outputstr+=searchsql;
         outputstr+=myutils.utils.paramcombin(colnames,true);
         outputstr+=' DataSet ds = SqlHelper.ExecuteDataset(SqlHelper.CenterConnString, CommandType.Text, sql, para);\n';
         outputstr+='List<'+table+'> result = SqlCommonHelper.ToList<'+table+'>(ds.Tables[0]);\n';
         outputstr+=' result = result ?? new List<'+table+'>();\n';
-        outputstr+='var modellist = AutoMapper.To<List<{{table}}>, List<{{table}}AdminModel>>(result);\n';
+        outputstr+='var modellist = AdminAutoMapper.To<List<{{table}}>, List<{{table}}AdminModel>>(result);\n';
         outputstr+=' return modellist;\n';
         outputstr+='}\n';
         return outputstr;
@@ -166,7 +166,7 @@ var dbetc={
         outputstr+='{\n';
         for(var i in cols)
         {
-            var mt= myutils.utils.convertDbType2Code(cols[i].ColumnType)
+            var mt= myutils.utils.convertDbType2Code(cols[i].DataType);
             outputstr+='public '
             outputstr+=mt;
             outputstr+=' ';
@@ -238,7 +238,7 @@ var dbetc={
         outputstr+= '{List<'+tbname+'> list = null;\n';
         outputstr+= 'Expression<Func<'+tbname+', bool>> predicate = a => a.GameId == (long)gameId;\n'
         outputstr+='list =  context.'+tbname+'.Where(predicate).OrderByDescending(a => a.{{orderby}}).Skip(skip).Take(pageSize).ToList();\n'
-        outputstr+='var modellist = AutoMapper.To<List<{{table}}>, List<{{table}}AdminModel>>(list);\n';
+        outputstr+='var modellist = AdminAutoMapper.To<List<{{table}}>, List<{{table}}AdminModel>>(list);\n';
         outputstr+='return modellist;\n';
         outputstr+='}\n';
         return outputstr;
