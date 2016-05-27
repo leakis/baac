@@ -7,6 +7,7 @@ var archiver = require('archiver');
 var configconst=require('../infrastructure/configconst');
 var uuid=require('uuid');
 var session = require('express-session');
+var filehelper= require('../infrastructure/filehelper');
 /* GET home page. */
 router.get('/', function(req, res, next) {
     tableservice.dbetc.databaseList(function(err,dblist){
@@ -39,53 +40,57 @@ router.post('/initsearch', function(req, res, next) {
     var myuuid=uuid.v1();
     req.session.myuuid =myuuid;
     configconst.zippath='resources/zipfiles/'+myuuid+'/';
-    if(cols&&cols.length>0) {
-        tableservice.dbetc.columnList(table, dbname, function (err, columnlist) {
-            var outputstr = tableservice.dbetc.initAdminModel(table, columnlist);
-            templateservice.templateservice.getServiceTemplate(function (err, str) {
-                templateservice.templateservice.writeServiceTemplate(str, table, cols, columnlist);
-            });
-            templateservice.templateservice.getControllerTemplate(function (err, str) {
-                templateservice.templateservice.writeControllerTemplate(str, table, cols, columnlist);
-            });
-            templateservice.templateservice.getHtmlTemplate(function (err, str) {
-                templateservice.templateservice.writeHtmlTemplate(str, table, cols, columnlist);
-            });
-            res.send('hello');
-        })
-    }
-    else
-    {
-        tableservice.dbetc.tableList(dbname,function(err,tblist)
-        {
-            tableservice.dbetc.initAutoMapper(tblist);
-            tblist.forEach(function (itbname) {
-                tableservice.dbetc.columnList(itbname, dbname, function (err, columnlist) {
-                    var outputstr = tableservice.dbetc.initAdminModel(itbname, columnlist);
-                    (function(itbname){
-                        templateservice.templateservice.getServiceTemplate(function (err, str) {
-                            templateservice.templateservice.writeServiceTemplate(str, itbname, cols, columnlist);
-                        });
-                    })(itbname);
 
-                    (function(itbname){
-                        templateservice.templateservice.getControllerTemplate(function (err, str) {
-                            templateservice.templateservice.writeControllerTemplate(str, itbname, cols, columnlist);
-                        });
-                    })(itbname);
-
-                    (function(itbname){
-                        templateservice.templateservice.getHtmlTemplate(function (err, str) {
-                            templateservice.templateservice.writeHtmlTemplate(str, itbname, cols, columnlist);
-                        });
-                    })(itbname);
+    filehelper.filehelper.createDirectory(configconst.zippath, function (err) {
+        if (cols && cols.length > 0) {
+            tableservice.dbetc.columnList(table, dbname, function (err, columnlist) {
+                var mytblist=[];
+                mytblist.push(table);
+                tableservice.dbetc.initAutoMapper(mytblist);
+                var outputstr = tableservice.dbetc.initAdminModel(table, columnlist);
+                templateservice.templateservice.getServiceTemplate(function (err, str) {
+                    templateservice.templateservice.writeServiceTemplate(str, table, cols, columnlist);
                 });
+                templateservice.templateservice.getControllerTemplate(function (err, str) {
+                    templateservice.templateservice.writeControllerTemplate(str, table, cols, columnlist);
+                });
+                templateservice.templateservice.getHtmlTemplate(function (err, str) {
+                    templateservice.templateservice.writeHtmlTemplate(str, table, cols, columnlist);
+                });
+                res.send('suc');
             })
-            res.send('helloall');
+        }
+        else {
+            tableservice.dbetc.tableList(dbname, function (err, tblist) {
+                tableservice.dbetc.initAutoMapper(tblist);
+                tblist.forEach(function (itbname) {
+                    tableservice.dbetc.columnList(itbname, dbname, function (err, columnlist) {
+                        var outputstr = tableservice.dbetc.initAdminModel(itbname, columnlist);
+                        (function (itbname) {
+                            templateservice.templateservice.getServiceTemplate(function (err, str) {
+                                templateservice.templateservice.writeServiceTemplate(str, itbname, cols, columnlist);
+                            });
+                        })(itbname);
 
-        })
+                        (function (itbname) {
+                            templateservice.templateservice.getControllerTemplate(function (err, str) {
+                                templateservice.templateservice.writeControllerTemplate(str, itbname, cols, columnlist);
+                            });
+                        })(itbname);
 
-    }
+                        (function (itbname) {
+                            templateservice.templateservice.getHtmlTemplate(function (err, str) {
+                                templateservice.templateservice.writeHtmlTemplate(str, itbname, cols, columnlist);
+                            });
+                        })(itbname);
+                    });
+                })
+                res.send('suc');
+
+            })
+
+        }
+    });
 
 });
 
