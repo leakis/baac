@@ -66,7 +66,7 @@ var utils={
     },
     paramcombin: function (names,iscount) {
         var para='List<SqlParameter> plist = new List<SqlParameter>();\n';
-        para+='plist.Add(new SqlParameter("@GameId'+'", (long)GameId));\n';
+        para+='plist.Add(new SqlParameter("@GameId'+'", (long)gameId));\n';
         if(iscount)
         {
             para+='plist.Add(new SqlParameter("@PageSize'+'", pageSize));\n';
