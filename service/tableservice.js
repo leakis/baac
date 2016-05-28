@@ -112,6 +112,10 @@ var dbetc={
             var mt= myutils.utils.convertDbType2Code(cols[i].DataType);
             methodparam+=',';
             methodparam+=mt;
+            if(mt!='string')
+            {
+                methodparam+='?';
+            }
             methodparam+=' ';
             methodparam+=cols[i].ColumnName;
             colnames.push(cols[i].ColumnName);
@@ -135,6 +139,10 @@ var dbetc={
             var mt= myutils.utils.convertDbType2Code(cols[i].DataType)
             methodparam+=',';
             methodparam+=mt;
+            if(mt!='string')
+            {
+                methodparam+='?';
+            }
             methodparam+=' ';
             methodparam+=cols[i].ColumnName;
             colnames.push(cols[i].ColumnName);

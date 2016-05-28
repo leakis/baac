@@ -47,13 +47,6 @@ var tplService={
                 searchiv+=' <input type="text"  placeholder="请输入'+cols[i].ColumnName+'" name="'+cols[i].ColumnName+'" class="nav-search-input" id="nav-search-'+cols[i].ColumnName+'" autocomplete="off" />\n';
                 searchvar+='var sea_'+cols[i].ColumnName+'= $("[name=\''+cols[i].ColumnName+'\']").val();\n';
             }
-            if(mt=='long'||mt=='int')
-            {
-                searchvar+='if(sea_'+cols[i].ColumnName+'==\'\')\n';
-                searchvar+='{\n';
-                 searchvar+='sea_'+cols[i].ColumnName+'=0;\n';
-                searchvar+='}\n';
-            }
             searchiv+='</span>\n';
             searchvar_pa+='+"&'+cols[i].ColumnName+'="+sea_'+cols[i].ColumnName;
            // methodp+=cols[i].ColumnName;
@@ -116,7 +109,7 @@ var tplService={
         filehelper.filehelper.createDirectory(codepath, function (err) {
             if(!err)
             {
-                var codefilepath=codepath+'/'+tbname+'_view.txt';
+                var codefilepath=codepath+'/'+tbname+'List.cshtml';
                 fs.writeFile(codefilepath,str,'utf-8',function(err){
                 });
             }
@@ -131,6 +124,10 @@ var tplService={
         {
             var mt= myutils.utils.convertDbType2Code(cols[i].DataType)
             methodparam+=mt;
+            if(mt!='string')
+            {
+                methodparam+='?';
+            }
             methodparam+=' ';
             methodparam+=cols[i].ColumnName;
             methodparam+=',';

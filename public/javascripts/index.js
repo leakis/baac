@@ -5,7 +5,7 @@ $(function () {
     $("#dblist").on('change',function () {
         var dbname = $("#dblist").val();
         $.ajax({
-            url: "/tables",
+            url: "/tables?random=" + Math.random(),
             data: {dbname: dbname},
             type: "get",
             success: function (data) {
@@ -39,7 +39,7 @@ $(function () {
             });
             var d={"table":tbname,"cols":cols,dbname:dbname};
             $.ajax({
-                url: "/initsearch",
+                url: "/initsearch?random=" + Math.random(),
                 contentType: "application/json",
                 data: JSON.stringify(d),
                 type: "post",
@@ -56,13 +56,13 @@ $(function () {
     $("#zip").click(function(event){
         event.preventDefault();
         $.ajax({
-            url: "/zip",
-            contentType: "application/json",
+            url: "/zip?random=" + Math.random(),
+            //contentType: "application/json",
             data: {},
             type: "get",
             success: function (data) {
                 console.log(data);
-                location.href='download?file='+data;
+                location.href='/download?file='+data;
             },
             error: function () {
                 alert("系统忙");
@@ -76,7 +76,7 @@ function getcols(tbname)
 {
     var dbname = $("#dblist").val();
     $.ajax({
-        url: "/columns",
+        url: "/columns?random=" + Math.random(),
         data: {table: tbname,dbname:dbname},
         type: "get",
         success: function (data) {

@@ -54,12 +54,19 @@ var utils={
             sql+='}\n';
         }else if(t=='int'||t=='long')
         {
-            sql+='if('+name+'>=0)\n'
+            sql+='if('+name+'!=null)\n'
             sql+='{\n';
             sql+='sql+=" AND '+name+'=@'+name+' ";\n';
             sql+='}\n';
         }
         else if(t=='DateTime')
+        {
+            sql+='if('+name+'!=null)\n'
+            sql+='{\n';
+            sql+='sql+=" AND '+name+'=@'+name+' ";\n';
+            sql+='}\n';
+        }
+        else
         {
             sql+='if('+name+'!=null)\n'
             sql+='{\n';

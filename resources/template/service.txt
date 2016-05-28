@@ -38,9 +38,10 @@
             return rtn > 0;
         }
 
-	    public {{table}} Get{{table}}(int id)
+	    public {{table}}AdminModel Get{{table}}(int id)
         {
-            var model = context.{{table}}.Find(id);
+            var data = context.{{table}}.Find(id);
+            var model=  AdminAutoMapper.To<{{table}}, {{table}}AdminModel>(data);
             return model;
         }
 
