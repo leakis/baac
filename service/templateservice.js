@@ -85,7 +85,7 @@ var tplService={
         }
 
         trtd+='<td>\n';
-        trtd+='<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#exampleModal" onclick="get('+pk+')">\n';
+        trtd+='<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#exampleModal" onclick="get(@item.'+pk+')">\n';
         trtd+='<i class="ace-icon fa fa-pencil bigger-120" title="编辑"></i>\n';
         trtd+='</button>\n';
         trtd+='<button class="btn btn-xs btn-danger" onclick="deletedata(@item.'+pk+',1)">\n';
